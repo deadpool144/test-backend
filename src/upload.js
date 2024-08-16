@@ -6,11 +6,11 @@ const router = express.Router();
 
 // Set up storage with multer
 const storage = multer.diskStorage({
-  destination: (req, files, cb) => {
+  destination: (req, file, cb) => {
     cb(null, 'temp/'); // Save files to the 'temp' directory
   },
-  filename: (req, files, cb) => {
-    cb(null, `${Date.now()}-${files.originalname}`); // Generate a unique filename
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`); // Generate a unique filename
     console.log()
   }
 });
@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Route to handle file upload
-router.post('/', upload.fields('file'), (req, res) => {
+router.post('/', upload.single('file'), (req, res) => {
   res.json({ message: 'File uploaded successfully', files: req.files });
 });
 
